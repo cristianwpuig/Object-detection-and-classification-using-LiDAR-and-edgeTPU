@@ -1,0 +1,17 @@
+// Seleccion del plano de las proyeccione (XY o YZ). Si seleccionamos XY todoas las variables que tengan z son de y
+PLANEXZtrue_XYfalse = false
+// Force first frame always (used to create background.jpg)
+IS_FIRST_FRAME_TEST = false
+// Plot all the images generated during object detection. Used to check that all work fine
+PLOT_IMAGES = true
+// Print debug information
+PRINT_DEBUG_INFO = true
+
+// Dataset information IN THIS FORMAT, WITHOUT "" or ;
+POINT_CLOUD_DATASET_DIR =/home/cristian/Desktop/SCOTT_Coral/Simulations/csv_datasets/
+DATASET_DATE_TIME = 2019-10-28-16-24-27
+STARTING_FRAME = 718
+
+NOTE: Background generation. Setting IS_FIRST_FRAME_TEST as true saves the first frame,  it is the same as define in ./c_algorithm_outputs/object_detection_outputs.csv
+is_first_frame as 1, however, when placed in object_detection_outputs.csv it is only generate the background in the first frame and when using this flag it
+is generated in all of them.
