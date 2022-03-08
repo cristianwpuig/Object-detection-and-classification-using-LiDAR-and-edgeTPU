@@ -5,7 +5,7 @@
 //                 is used in the next frame in the tracking stage. The write_voxel_in_txt function writes the voxels information
 //                 of each detected object in a txt file which is then used in the object classification stage.
 //
-//   Created By: cristianwpuig (https://github.com/cristianwpuig)
+//   Created By: Cristian Wisultschew (https://github.com/cristianwpuig)
 ////////////////////////////////////////////////////////////////////////////
 #include "write_data.hpp"
 

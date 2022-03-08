@@ -17,10 +17,11 @@ voxels_files_dir = "../c_algorithm_outputs/detected_objects_in_voxels/"
 object_detection_outputs = "../c_algorithm_outputs/object_detection_outputs.csv"
 tflite_saved_file = "./tflite_model/model_edgetpu.tflite"
 voxel_size = 16
-total_processed_frames = 50
+total_processed_frames = 732
+start_frameID = 1
 
 def main():
-    writein_object_detection_outputs(frame_ID = 25, is_first_frame=False)
+    writein_object_detection_outputs(frame_ID = start_frameID, is_first_frame=False)
     libc = ctypes.CDLL("../Debug/libTWS_V2.1_so_Simu_ubuntu.so")
 
     # Load network into Coral

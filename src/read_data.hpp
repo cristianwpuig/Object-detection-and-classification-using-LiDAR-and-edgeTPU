@@ -17,6 +17,8 @@ struct config_params {
 	bool PLOT_IMAGES = true;
 	bool PRINT_DEBUG_INFO = true;
 	bool RESET_FRAME_ID = true;
+	bool STOP_BETWEEN_FRAMES = true;
+	string DATASET_TYPE;
 	string POINT_CLOUD_DATASET_DIR;
 	string DATASET_DATE_TIME;
 	int STARTING_FRAME;

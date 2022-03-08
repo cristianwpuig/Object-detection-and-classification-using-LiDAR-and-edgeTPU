@@ -5,7 +5,7 @@
 //                 last frame, this is used in the tracking stage. Third, the read_simulated_data perform the read of theLiDAR
 //                 dataset. Finally, getName generate the names of the LiDAR data frames.
 //
-//   Created By: cristianwpuig (https://github.com/cristianwpuig)
+//   Created By: Cristian Wisultschew (https://github.com/cristianwpuig)
 ////////////////////////////////////////////////////////////////////////////
 #include "read_data.hpp"
 
@@ -47,6 +47,11 @@ config_params read_config_file(){
 				aux = value;
 				config_params_values.RESET_FRAME_ID = (aux == "true" || aux == "True");
 			}
+			else if (name == "STOP_BETWEEN_FRAMES") {
+				aux = value;
+				config_params_values.STOP_BETWEEN_FRAMES = (aux == "true" || aux == "True");
+			}
+			else if (name == "DATASET_TYPE") config_params_values.DATASET_TYPE = value;
 			else if (name == "POINT_CLOUD_DATASET_DIR") config_params_values.POINT_CLOUD_DATASET_DIR = value;
 			else if (name == "DATASET_DATE_TIME") config_params_values.DATASET_DATE_TIME = value;
 			else if (name == "STARTING_FRAME") config_params_values.STARTING_FRAME = std::stoi(value);
@@ -56,7 +61,6 @@ config_params read_config_file(){
 	{
 		std::cerr << "Couldn't open config file for reading.\n";
 	}
-
 	return config_params_values;
 }
 
@@ -137,8 +141,14 @@ void read_lidar_data(int frame_id, object_detection_data *frame_data_main, confi
 				input_y.push_back(atof(token.c_str()));
 			if (cont_inp == 2)
 				input_z.push_back(atof(token.c_str()));
-			if (cont_inp == 6)
-				input_lum.push_back(atof(token.c_str()));
+			if (config_params_values.DATASET_TYPE == "raw"){
+				if (cont_inp == 6)
+					input_lum.push_back(atof(token.c_str()));
+			}
+			if (config_params_values.DATASET_TYPE == "preprocessed"){
+				if (cont_inp == 3)
+					input_lum.push_back(atof(token.c_str()));
+			}
 			cont_inp++;
 		}
 	cont_csv++;
@@ -171,18 +181,25 @@ void read_lidar_data(int frame_id, object_detection_data *frame_data_main, confi
 
 string getName(int num_frame, string CSVdir, config_params config_params_values ){
 	string CSVfile;
-	string str_frame_number;
 
-	if ((num_frame + config_params_values.STARTING_FRAME) > 0 and (num_frame + config_params_values.STARTING_FRAME) < 10)
-		str_frame_number = "000" + to_string(num_frame + config_params_values.STARTING_FRAME);
-	if ((num_frame + config_params_values.STARTING_FRAME) >= 10 and (num_frame + config_params_values.STARTING_FRAME) < 100)
-		str_frame_number = "00" + to_string(num_frame + config_params_values.STARTING_FRAME);
-	if ((num_frame + config_params_values.STARTING_FRAME) > 100 and (num_frame + config_params_values.STARTING_FRAME) < 1000)
-		str_frame_number = "0" + to_string(num_frame + config_params_values.STARTING_FRAME);
-	if ((num_frame + config_params_values.STARTING_FRAME) > 1000 and (num_frame + config_params_values.STARTING_FRAME) < 10000)
-		str_frame_number = to_string(num_frame + config_params_values.STARTING_FRAME);
-
-	CSVfile =  CSVdir + config_params_values.DATASET_DATE_TIME + "_Velodyne-VLP-16-Data (Frame " + str_frame_number + ").csv";
+	if (config_params_values.DATASET_TYPE == "raw"){
+		string str_frame_number;
+		if ((num_frame + config_params_values.STARTING_FRAME) > 0 and (num_frame + config_params_values.STARTING_FRAME) < 10)
+			str_frame_number = "000" + to_string(num_frame + config_params_values.STARTING_FRAME);
+		if ((num_frame + config_params_values.STARTING_FRAME) >= 10 and (num_frame + config_params_values.STARTING_FRAME) < 100)
+			str_frame_number = "00" + to_string(num_frame + config_params_values.STARTING_FRAME);
+		if ((num_frame + config_params_values.STARTING_FRAME) > 100 and (num_frame + config_params_values.STARTING_FRAME) < 1000)
+			str_frame_number = "0" + to_string(num_frame + config_params_values.STARTING_FRAME);
+		if ((num_frame + config_params_values.STARTING_FRAME) > 1000 and (num_frame + config_params_values.STARTING_FRAME) < 10000)
+			str_frame_number = to_string(num_frame + config_params_values.STARTING_FRAME);
+		CSVfile =  CSVdir + config_params_values.DATASET_DATE_TIME + "_Velodyne-VLP-16-Data (Frame " + str_frame_number + ").csv";
+	}
+	else if (config_params_values.DATASET_TYPE == "preprocessed"){
+		CSVfile = config_params_values.POINT_CLOUD_DATASET_DIR + "frame_" + to_string(num_frame) + ".csv";
+	}
+	else{
+		cout << "Configuration parameter in ./python_scripts/config.txt DATASET_TYPE not recongized, put raw or preprocessed only" << endl;
+	}
 	return CSVfile;
 }
 

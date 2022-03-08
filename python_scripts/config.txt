@@ -6,9 +6,15 @@ IS_FIRST_FRAME_TEST = false
 PLOT_IMAGES = true
 // Print debug information
 PRINT_DEBUG_INFO = true
+// Stop between frames, enter to continue
+STOP_BETWEEN_FRAMES = false
 
 // Dataset information IN THIS FORMAT, WITHOUT "" or ;
-POINT_CLOUD_DATASET_DIR =/home/cristian/Desktop/SCOTT_Coral/Simulations/csv_datasets/
+// Read from Velodyne raw dataset (raw) or matlab labeled generated dataset (preprocessed)
+DATASET_TYPE = preprocessed
+//POINT_CLOUD_DATASET_DIR =/home/cristian/Desktop/SCOTT_Coral/Simulations/csv_datasets/
+POINT_CLOUD_DATASET_DIR =/home/cristian/Desktop/LabelPointCloud/datasets/ObjDet_generated_dataset_Austria/frames/
+// Information about raw data
 DATASET_DATE_TIME = 2019-10-28-16-24-27
 STARTING_FRAME = 718
 

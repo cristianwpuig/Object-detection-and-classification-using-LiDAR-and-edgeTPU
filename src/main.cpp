@@ -6,7 +6,7 @@
 //                 voxel format and saved in .txt format in ./c_algorithm_outputs/detected_objects_in_voxels/. When the
 //                 main function is called, one LiDAR frame is processed.
 //
-//   Created By: cristianwpuig (https://github.com/cristianwpuig)
+//   Created By: Cristian Wisultschew (https://github.com/cristianwpuig)
 ////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <stdio.h>
@@ -36,7 +36,7 @@ int main()
 {
 	// Read config file located in ./python_scripts/config.txt
 	config_params_values = read_config_file();
-    //Initializa Object_detection_data struct
+    //Initialize Object_detection_data struct
 	frame_data_main.is_first_frame = true;
 	frame_data_main.time_between_frames = 0;
 	frame_data_main.object_velocity.push_back(11);

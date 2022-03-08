@@ -3,7 +3,7 @@
 //   Description : In this file, the functions obj_detect perform the object detection and tracking. It also generates the voxels
 //                 of each detected point cloud object.
 //
-//   Created By: cristianwpuig (https://github.com/cristianwpuig)
+//   Created By: Cristian Wisultschew (https://github.com/cristianwpuig)
 ////////////////////////////////////////////////////////////////////////////
 #include "object_detection.hpp"
 
@@ -26,12 +26,19 @@ void obj_detect(object_detection_data *frame_data_in, config_params config_param
 	// Display time of the plots
 	int wait_k = 300;
 
-    // Limits XYZ of the ROI (Region Of Interest)
-    // Plane XY, DATASET_DATE_TIME = "2019-09-30-19-47-50"
+//    // Limits XYZ of the ROI (Region Of Interest)
+//    // Plane XY, DATASET_DATE_TIME = "2019-09-30-19-47-50"
+//	double axes_limits[3][2] = {
+//		{-2.1, 3},  // X axis range
+//		{0.137, 2.5},  // Y axis range
+//		{-0.7,1.2} // Z axis range
+//	};
+
+    // Limits XYZ of the ROI in ETSII and Austria datasets (plane XY)
 	double axes_limits[3][2] = {
-		{-2.1, 3},  // X axis range
-		{0.137, 2.5},  // Y axis range
-		{-0.7,1.2} // Z axis range
+		{-9.4, 10},  // X axis range
+		{1.6, 8.2},  // Y axis range
+		{-0.9, 3.5} // Z axis range
 	};
 
     // Object detection variables
@@ -497,6 +504,9 @@ void obj_detect(object_detection_data *frame_data_in, config_params config_param
 	}
 
 	// STOP (Only in debugging mode)
-	cin.get();
+	if (config_params_values.STOP_BETWEEN_FRAMES == true){
+		cout << "System stopped, press enter to continue..." << endl;
+		cin.get();
+	}
 	}// closing of is_first_frame == false
 }
