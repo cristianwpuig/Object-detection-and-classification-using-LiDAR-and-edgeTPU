@@ -22,6 +22,7 @@ struct config_params {
 	string POINT_CLOUD_DATASET_DIR;
 	string DATASET_DATE_TIME;
 	int STARTING_FRAME;
+	double XMIN, XMAX, YMIN, YMAX, ZMIN, ZMAX;
 };
 
 void read_outputs_previous_frame(object_detection_data *read_prev_frame);

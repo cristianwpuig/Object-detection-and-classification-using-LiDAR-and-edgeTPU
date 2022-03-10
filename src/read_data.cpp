@@ -55,11 +55,17 @@ config_params read_config_file(){
 			else if (name == "POINT_CLOUD_DATASET_DIR") config_params_values.POINT_CLOUD_DATASET_DIR = value;
 			else if (name == "DATASET_DATE_TIME") config_params_values.DATASET_DATE_TIME = value;
 			else if (name == "STARTING_FRAME") config_params_values.STARTING_FRAME = std::stoi(value);
+			else if (name == "XMIN") config_params_values.XMIN = std::stod(value);
+			else if (name == "XMAX") config_params_values.XMAX = std::stod(value);
+			else if (name == "YMIN") config_params_values.YMIN = std::stod(value);
+			else if (name == "YMAX") config_params_values.YMAX = std::stod(value);
+			else if (name == "ZMIN") config_params_values.ZMIN = std::stod(value);
+			else if (name == "ZMAX") config_params_values.ZMAX = std::stod(value);
 		}
 	}
 	else
 	{
-		std::cerr << "Couldn't open config file for reading.\n";
+		cout << "Couldn't open config file for reading" << endl;
 	}
 	return config_params_values;
 }

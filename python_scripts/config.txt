@@ -3,11 +3,11 @@ PLANEXZtrue_XYfalse = false
 // Force first frame always (used to create background.jpg)
 IS_FIRST_FRAME_TEST = false
 // Plot all the images generated during object detection. Used to check that all work fine
-PLOT_IMAGES = true
+PLOT_IMAGES = tru
 // Print debug information
-PRINT_DEBUG_INFO = true
+PRINT_DEBUG_INFO = tru
 // Stop between frames, enter to continue
-STOP_BETWEEN_FRAMES = false
+STOP_BETWEEN_FRAMES = tru
 
 // Dataset information IN THIS FORMAT, WITHOUT "" or ;
 // Read from Velodyne raw dataset (raw) or matlab labeled generated dataset (preprocessed)
@@ -17,6 +17,15 @@ POINT_CLOUD_DATASET_DIR =/home/cristian/Desktop/LabelPointCloud/datasets/ObjDet_
 // Information about raw data
 DATASET_DATE_TIME = 2019-10-28-16-24-27
 STARTING_FRAME = 718
+
+//ROI limits
+XMIN = -7.4
+XMAX = 10
+YMIN = 3
+YMAX = 8.2
+ZMIN = -0.5
+ZMAX = 3.5
+
 
 NOTE: Background generation. Setting IS_FIRST_FRAME_TEST as true saves the first frame,  it is the same as define in ./c_algorithm_outputs/object_detection_outputs.csv
 is_first_frame as 1, however, when placed in object_detection_outputs.csv it is only generate the background in the first frame and when using this flag it

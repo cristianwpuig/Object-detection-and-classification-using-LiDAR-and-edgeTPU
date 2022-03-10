@@ -28,17 +28,23 @@ void obj_detect(object_detection_data *frame_data_in, config_params config_param
 
 //    // Limits XYZ of the ROI (Region Of Interest)
 //    // Plane XY, DATASET_DATE_TIME = "2019-09-30-19-47-50"
-//	double axes_limits[3][2] = {
+//	double roi_axes_limits[3][2] = {
 //		{-2.1, 3},  // X axis range
 //		{0.137, 2.5},  // Y axis range
 //		{-0.7,1.2} // Z axis range
 //	};
 
     // Limits XYZ of the ROI in ETSII and Austria datasets (plane XY)
-	double axes_limits[3][2] = {
-		{-9.4, 10},  // X axis range
-		{1.6, 8.2},  // Y axis range
-		{-0.9, 3.5} // Z axis range
+//	double roi_axes_limits[3][2] = {
+//		{-9.4, 10},  // X axis range
+//		{3, 8.2},  // Y axis range
+//		{-0.5, 3.5} // Z axis range
+//	};
+
+	double roi_axes_limits[3][2] = {
+		{config_params_values.XMIN, config_params_values.XMAX},  // X axis range
+		{config_params_values.YMIN, config_params_values.YMAX},  // Y axis range
+		{config_params_values.ZMIN, config_params_values.ZMAX} // Z axis range
 	};
 
     // Object detection variables
@@ -48,12 +54,12 @@ void obj_detect(object_detection_data *frame_data_in, config_params config_param
 	float correctorX;
 	float correctorZ;
 	if (config_params_values.PLANEXZtrue_XYfalse == true){
-		correctorX = (abs(axes_limits[0][0]) + abs(axes_limits[0][1]))/pixel_w;
-		correctorZ = (abs(axes_limits[2][0]) + abs(axes_limits[2][1]))/pixel_h;
+		correctorX = (abs(roi_axes_limits[0][0]) + abs(roi_axes_limits[0][1]))/pixel_w;
+		correctorZ = (abs(roi_axes_limits[2][0]) + abs(roi_axes_limits[2][1]))/pixel_h;
 	}
 	else{
-		correctorX = (abs(axes_limits[0][0]) + abs(axes_limits[0][1]))/pixel_w;
-		correctorZ = (abs(axes_limits[1][0]) + abs(axes_limits[1][1]))/pixel_h;
+		correctorX = (abs(roi_axes_limits[0][0]) + abs(roi_axes_limits[0][1]))/pixel_w;
+		correctorZ = (abs(roi_axes_limits[1][0]) + abs(roi_axes_limits[1][1]))/pixel_h;
 	}
 
 	// Tracking variables
@@ -99,9 +105,9 @@ void obj_detect(object_detection_data *frame_data_in, config_params config_param
 
 	// The LiDAR points inside the ROI are filtered. Note that if we are in the XY plane the z with the y are inverted.
 	for (int i = 0; i<frame_data_in->lidar_x.size(); i++){
-		if ((dat_x[i] < axes_limits[0][1]) and (dat_x[i] > axes_limits[0][0])){
-			if ((dat_y[i] < axes_limits[1][1]) and (dat_y[i] > axes_limits[1][0])){
-				if ((dat_z[i] < axes_limits[2][1]) and (dat_z[i] > axes_limits[2][0])){
+		if ((dat_x[i] < roi_axes_limits[0][1]) and (dat_x[i] > roi_axes_limits[0][0])){
+			if ((dat_y[i] < roi_axes_limits[1][1]) and (dat_y[i] > roi_axes_limits[1][0])){
+				if ((dat_z[i] < roi_axes_limits[2][1]) and (dat_z[i] > roi_axes_limits[2][0])){
 					ROI_data_x.push_back(dat_x[i]);
 					// Here we select the XY or YZ plane. Note that the points of y or z are stored in fdata_z.
 					if (config_params_values.PLANEXZtrue_XYfalse==true){
@@ -123,8 +129,8 @@ void obj_detect(object_detection_data *frame_data_in, config_params config_param
 		cout << "points after remove : " << cnt << " of a total input_x.size(): "<< frame_data_in->lidar_x.size() << endl;
 	// We convert from meters to pixels using ROI limits
 	for (int i = 0; i<cnt; i++){
-	  fdata_x.push_back(((ROI_data_x [i]) - axes_limits[0][0])/correctorX);
-	  fdata_z.push_back(((ROI_data_z [i]) - axes_limits[2][0])/correctorZ);
+	  fdata_x.push_back(((ROI_data_x [i]) - roi_axes_limits[0][0])/correctorX);
+	  fdata_z.push_back(((ROI_data_z [i]) - roi_axes_limits[2][0])/correctorZ);
 	  fdata_z [i] = double(pixel_h) - fdata_z [i];// put y=0 at the bottom instead of at the top (default)
 	  fdata_lum[i] = fdata_lum[i] * 2.5;// we go from 0-100 of lum to 0-255 of pixel
 	  // For security reasons, to avoid writing where it should not be written, it gives error if it is written in a pixel that does not exist.

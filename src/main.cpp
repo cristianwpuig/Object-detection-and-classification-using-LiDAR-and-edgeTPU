@@ -49,7 +49,6 @@ int main()
 	cout << "#####################" << endl;
 	// Read LiDAR point cloud from saved data
 	read_lidar_data(frame_data_main.frame_ID, &frame_data_main, config_params_values);
-	cout << "llegooou" << endl;
 	// Perform object detection and tracking
 	obj_detect(&frame_data_main, config_params_values);
 	// Writing the results in ./c_algorithm_outputs/object_detection_outputs.csv
