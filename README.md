@@ -22,6 +22,15 @@ Before running the system it is necessary to record a scene with a LiDAR sensor 
 First of all, some parameters can be configured in ./python_scripts/config.txt file. Whit these parameters can be modified some functionality of the code such as selection of the projection plane (XZ or XY) in the object detection stage, capturing a new ground truth background scene used in the object detection stage, defining the location of the LiDAR data, or show some debugging information such as logs and images used during the object detection stage.
 
 ## Usage
+First of all, it is necessary to compile the C++ files into the deployed machine to generate the shared object file. This file will be then called by the python script. The compilation is performed by using the makefile inside Debug directory.
+
+
+```bash
+cd ./Debug
+make clean
+make all
+```
+
 The system is executed using a python script. The object detection stage is encapsulated in a C++ function executed in the python script. To execute the system:
 
 ```bash

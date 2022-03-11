@@ -1,9 +1,9 @@
 // Results for calculate the accuracy
-TP = 182
-TN = 208
-FP = 6
-FN = 8
-total_real_objects = 190
-total_predicted_objects = 188
-total_classified_objects = 182
-objects_classified_correctly = 134
+TP = 81
+TN = 35
+FP = 0
+FN = 29
+total_real_objects = 110
+total_predicted_objects = 81
+total_classified_objects = 81
+objects_classified_correctly = 0

@@ -15,9 +15,10 @@ python test_accuracy.py
 # Configuration parametres
 print_results = True
 load_results = False
-labeled_data_dir = "/home/cristian/Desktop/LabelPointCloud/datasets/ObjDet_generated_dataset_Austria/"
-total_processed_frames = 732
-start_frame_ID = 539
+write_results = True
+labeled_data_dir = "/home/cristian/Desktop/LabelPointCloud/datasets/ObjDet_generated_dataset/"
+total_processed_frames = len(os.listdir(labeled_data_dir + "frames/"))
+start_frame_ID = 6
 
 voxels_files_dir = "../c_algorithm_outputs/detected_objects_in_voxels/"
 object_detection_outputs = "../c_algorithm_outputs/object_detection_outputs.csv"
@@ -26,6 +27,11 @@ config_file_dir = "./config.txt"
 results_file_dir = "./tools/results.txt"
 voxel_size = 16
 image_size = [400, 200] # W X H
+bounding_box_margin = 0.2 # Bounding box margin not counted as inside the ROI in m
+
+# To save all the generated voxels in a directory (this data is used to optimize the DNN parameters)
+save_generated_voxels = True
+save_generated_voxels_dir = "./tools/generated_voxels/"
 
 def main():
     performance_metrics = load_results_file(load_results, results_file_dir)
@@ -48,6 +54,8 @@ def main():
         out = libc.main()
         obj_det_box_Xc, obj_det_csv_vel, obj_det_csv_area = loadcsv(object_detection_outputs, roi_axes_limits)
         voxel_files_names = os.listdir(voxels_files_dir)
+        if save_generated_voxels == True:
+            save_generated_voxels_function(voxels_files_dir, save_generated_voxels_dir)
         if os.listdir(voxels_files_dir) != []:
             for voxels_file in voxel_files_names:
                 Voxel = read_voxel_file(voxels_files_dir + voxels_file)
@@ -66,8 +74,6 @@ def main():
         correct_predictions = calculate_correct_predictions(HWLXcYcZc, real_classes, obj_det_box_Xc, predicted_classes)
         performance_metrics["objects_classified_correctly"] += correct_predictions
         performance_metrics = calculate_performance_metrics(real_classes, predicted_classes, correct_predictions, performance_metrics)
-        if (load_results == True):
-            write_results_in_file(results_file_dir, performance_metrics)
         if print_results == True:
             # print("HWLXcYcZc: ",HWLXcYcZc)
             # print("obj_det_box_Xc: ",obj_det_box_Xc)
@@ -77,8 +83,22 @@ def main():
             print("performance_metrics[total_real_objects]: ", performance_metrics["total_real_objects"])
             print("performance_metrics[total_predicted_objects]: ", performance_metrics["total_predicted_objects"])
             print("performance_metrics[total_classified_objects]: ", performance_metrics["total_classified_objects"])
-            print("Accuracy: ", (performance_metrics["objects_classified_correctly"]/performance_metrics["total_classified_objects"])*100, "%")
+            if (performance_metrics["total_classified_objects"] != 0):
+                print("Accuracy: ", (performance_metrics["objects_classified_correctly"]/performance_metrics["total_classified_objects"])*100, "%")
             print("performance_metrics: ", performance_metrics)
+    if (write_results == True):
+        write_results_in_file(results_file_dir, performance_metrics)
+
+def save_generated_voxels_function(voxels_files_dir, save_generated_voxels_dir):
+    if not os.path.exists(save_generated_voxels_dir):
+        os.makedirs(save_generated_voxels_dir)
+    voxel_files_names = os.listdir(voxels_files_dir)
+    num_voxels_previously_generated = len(os.listdir(save_generated_voxels_dir))
+    start_voxels_num = 94
+    count = 0
+    for voxels_file in voxel_files_names:
+        os.system("cp "+voxels_files_dir+voxels_file+" "+save_generated_voxels_dir+"voxel_object_"+str(start_voxels_num + num_voxels_previously_generated + count)+".txt")
+        count += 1
 
 
 def write_results_in_file(results_file_dir, performance_metrics):
@@ -222,7 +242,6 @@ def calculate_correct_predictions(HWLXcYcZc, real_classes, obj_det_box_Xc, predi
 
 def object_classes_inside_ROI(HWLXcYcZc, classes, roi_axes_limits):
     classes_inside_ROI = []
-    bounding_box_margin = 0.2 # Bounding box margin not counted as inside the ROI in m
     for object_ID in range(len(HWLXcYcZc)):
         # If the limit of the bounding box with a margin is inside the ROI there is counted as an object
         if HWLXcYcZc[object_ID,3] >= (roi_axes_limits[0][0] - HWLXcYcZc[object_ID,0]/2 + bounding_box_margin) and HWLXcYcZc[object_ID,3] <= (roi_axes_limits[0][1] + HWLXcYcZc[object_ID,0]/2 - bounding_box_margin):
