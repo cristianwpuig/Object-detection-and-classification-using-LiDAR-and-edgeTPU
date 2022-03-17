@@ -1,7 +1,7 @@
-7.1317,0,-1
+13.2872,0,-1
 -1
 -1
-151,-1
+575,-1
 # First line: clock(), is first frame (0: no, 1:yes), vector(x_coor en pixels)
 # Second line: vector (object velocity in m/s) for each detected objetc
 # Third line: vector (object area in m2) for each detected objetc

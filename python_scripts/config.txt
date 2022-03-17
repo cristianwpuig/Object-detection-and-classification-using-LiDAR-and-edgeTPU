@@ -13,18 +13,20 @@ STOP_BETWEEN_FRAMES = tru
 // Read from Velodyne raw dataset (raw) or matlab labeled generated dataset (preprocessed)
 DATASET_TYPE = preprocessed
 //POINT_CLOUD_DATASET_DIR =/home/cristian/Desktop/SCOTT_Coral/Simulations/csv_datasets/
-POINT_CLOUD_DATASET_DIR =/home/cristian/Desktop/LabelPointCloud/datasets/ObjDet_generated_dataset_Austria/frames/
+//POINT_CLOUD_DATASET_DIR =/home/cristian/Desktop/LabelPointCloud/datasets/ObjDet_generated_dataset_Austria/frames/
+POINT_CLOUD_DATASET_DIR =/home/cristian/Desktop/LabelPointCloud/datasets/ObjDet_generated_dataset/frames/
 // Information about raw data
 DATASET_DATE_TIME = 2019-10-28-16-24-27
 STARTING_FRAME = 718
 
 //ROI limits
-XMIN = -9.9
-XMAX = 10.4
-YMIN = 2.1
-YMAX = 7.9
-ZMIN = -0.95
+XMIN = -8.9
+XMAX = 10.1
+YMIN = -0.3
+YMAX = 2.34
+ZMIN = -0.75
 ZMAX = 3.5
+
 
 
 NOTE: Background generation. Setting IS_FIRST_FRAME_TEST as true saves the first frame,  it is the same as define in ./c_algorithm_outputs/object_detection_outputs.csv

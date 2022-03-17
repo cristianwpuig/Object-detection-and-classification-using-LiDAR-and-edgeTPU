@@ -18,7 +18,7 @@ load_results = False
 write_results = True
 labeled_data_dir = "/home/cristian/Desktop/LabelPointCloud/datasets/ObjDet_generated_dataset/"
 total_processed_frames = len(os.listdir(labeled_data_dir + "frames/"))
-start_frame_ID = 6
+start_frame_ID = 2
 
 voxels_files_dir = "../c_algorithm_outputs/detected_objects_in_voxels/"
 object_detection_outputs = "../c_algorithm_outputs/object_detection_outputs.csv"
@@ -27,7 +27,8 @@ config_file_dir = "./config.txt"
 results_file_dir = "./tools/results.txt"
 voxel_size = 16
 image_size = [400, 200] # W X H
-bounding_box_margin = 0.2 # Bounding box margin not counted as inside the ROI in m
+bounding_box_margin = 0.75 # Bounding box margin not counted as inside the ROI in m
+start_voxels_num = 1
 
 # To save all the generated voxels in a directory (this data is used to optimize the DNN parameters)
 save_generated_voxels = True
@@ -94,7 +95,6 @@ def save_generated_voxels_function(voxels_files_dir, save_generated_voxels_dir):
         os.makedirs(save_generated_voxels_dir)
     voxel_files_names = os.listdir(voxels_files_dir)
     num_voxels_previously_generated = len(os.listdir(save_generated_voxels_dir))
-    start_voxels_num = 94
     count = 0
     for voxels_file in voxel_files_names:
         os.system("cp "+voxels_files_dir+voxels_file+" "+save_generated_voxels_dir+"voxel_object_"+str(start_voxels_num + num_voxels_previously_generated + count)+".txt")
@@ -231,7 +231,7 @@ def calculate_correct_predictions(HWLXcYcZc, real_classes, obj_det_box_Xc, predi
             if real_classes[0] == predicted_classes[ID_dist_min[0]]:
                 correct_predictions += 1
         else:
-            for i in range(len(predicted_classes)):
+            for i in range(len(real_classes)):
                 if (ID_dist_min!=[]):
                     if real_classes[i] == predicted_classes[ID_dist_min[i]]:
                         correct_predictions += 1
